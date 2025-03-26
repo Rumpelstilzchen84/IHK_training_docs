@@ -4,6 +4,7 @@
  * @Inhalt: Klasse "Getränk"
  */
 import me.tongfei.progressbar.ProgressBar;
+import me.tongfei.progressbar.ProgressBarStyle;
 
 public class Getraenk {
     // Fields/Attribute
@@ -36,21 +37,21 @@ public class Getraenk {
                 (milchschaum == false ? "Ohne" : "Mit") + " Milchschaum");
     }
 
-        // Progress-Bar: <= TODO
+        // Progress-Bar zum Brühfortschritt
     void bruehFortschritt(double bruehzeit, boolean milchschaum){
-        double schritte = (bruehzeit * 60)/0.05;
+        double pausenberechnung = (50 * bruehzeit); // Pause [ms]
+        long pause = Math.round(pausenberechnung);
         if(milchschaum){
-            schritte += 15;
+            pause += 25;
         }
-        schritte = (int) schritte;
-        try (ProgressBar pb = new ProgressBar("Wird zubereitet", 100)) {
+        try (ProgressBar pb = new ProgressBar("Zubereitung", 100)) {
             for (int i = 0; i < 100; i++) {
                 // Fortschritt um 1 erhöhen
                 pb.step();
 
                 // Simuliert eine Aufgabe durch eine kleine Pause
                 try {
-                    Thread.sleep(25); // 25 Millisekunden Pause
+                    Thread.sleep(pause); // Pause [ms]
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

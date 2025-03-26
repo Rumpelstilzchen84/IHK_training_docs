@@ -10,24 +10,26 @@ public class KaffeemaschineOOP {
     public static void main(String[] args) {
         boolean statusAuswahl = true;
 
-        General.divider();
-        System.out.println("=== Kaffee-Automat ===");
-        General.divider();
-
         Getraenk[] getraenkeAngebot = {
                 (new Getraenk("Café Crème",200, 1.0, false)),
                 (new Getraenk("Espresso",50, 0.5, false)),
-                (new Getraenk("Café Cortado", 60, 1., true)),
+                (new Getraenk("Café Cortado", 60, 1.0, true)),
                 (new Getraenk("Cappuccino", 250, 1.5, true)),
                 (new Getraenk("Latte Macchiato", 300, 1.5, true))};
+
+        General.divider();
+        System.out.println("============= Kaffee-Automat =============");
+        General.divider();
+        // Ausgabe der verfügbaren Getränke
+        System.out.println(Getraenk.getAnzahlGetraenke() + " verschiedene Getränke stehen zur Auswahl");
+        General.divider();
+
+
 
         var consoleScanner = new Scanner(System.in);
         int auswahl = 0;
 
         while (statusAuswahl) {    // Endlosschleife zur Anzeige des Menüs
-            // Ausgabe der verfügbaren Getränke
-            System.out.println(Getraenk.getAnzahlGetraenke() + " verschiedene Getränke stehen zur Auswahl");
-
             // Erstellung der Items im Menü
             for (int i = 0; i < getraenkeAngebot.length; i++) {
                 System.out.println((i+1) + ". " + getraenkeAngebot[i].getName());

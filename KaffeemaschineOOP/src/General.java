@@ -6,7 +6,7 @@
 public class General {
 
     public static void divider(){
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 21; i++) {
             System.out.print("=+");
         }
         System.out.println();
