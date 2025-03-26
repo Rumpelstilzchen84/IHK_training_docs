@@ -10,4 +10,3 @@
 ### KaffeemaschineOOP:
 + Menu to choose from various coffee types
 + Menu item to switch off the coffee maker
-+ TODO: endless while loop for menu creation not working yet
