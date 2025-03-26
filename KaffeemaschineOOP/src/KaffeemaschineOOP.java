@@ -21,6 +21,9 @@ public class KaffeemaschineOOP {
                 (new Getraenk("Cappuccino", 250, 1.5, true)),
                 (new Getraenk("Latte Macchiato", 300, 1.5, true))};
 
+        var consoleScanner = new Scanner(System.in);
+        int auswahl = 0;
+
         while (statusAuswahl) {    // Endlosschleife zur Anzeige des Menüs
             // Ausgabe der verfügbaren Getränke
             System.out.println(Getraenk.getAnzahlGetraenke() + " verschiedene Getränke stehen zur Auswahl");
@@ -35,21 +38,25 @@ public class KaffeemaschineOOP {
             System.out.print("Bitte Auswahl treffen (1 - " + getraenkeAngebot.length + ") oder Ausschalten: ");
 
             // Abfrage der Nutzereingabe
-            var consoleScanner = new Scanner(System.in);
-            int auswahl = (consoleScanner.nextInt());
+            // var consoleScanner = new Scanner(System.in);
+            // int auswahl = (consoleScanner.nextInt());
+            auswahl = consoleScanner.nextInt();
 
-            switch(auswahl-1){
-                case 0:
-                    getraenkeAngebot[0].getraenkAusgeben();
-                    break;
+            switch(auswahl){
                 case 1:
-                    getraenkeAngebot[1].getraenkAusgeben();
+                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
                     break;
                 case 2:
-                    getraenkeAngebot[2].getraenkAusgeben();
+                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
                     break;
                 case 3:
-                    getraenkeAngebot[3].getraenkAusgeben();
+                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
+                    break;
+                case 4:
+                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
+                    break;
+                case 5:
+                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
                     break;
                 case 9:
                     statusAuswahl = false;
@@ -59,11 +66,12 @@ public class KaffeemaschineOOP {
                     break;
             }
 
-            consoleScanner.close();
-
             // Zusammenfassung:
             General.divider();
             System.out.println("Bisher zubereitete Getränke an dieser Maschine: " + Getraenk.getAnzahlBezuege() + " Stk.");
+            General.divider();
+
         }
+        consoleScanner.close();
     }
 }
