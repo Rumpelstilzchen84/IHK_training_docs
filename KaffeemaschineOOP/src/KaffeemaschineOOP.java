@@ -4,7 +4,7 @@
  * @Inhalt: Kaffeemaschine in OOP
  */
 
-/* TO DOs:
+/* TODO:
 - Eingezahltes Guthaben beachten, zu wenig Guthaben abfangen, Rückgeld herausgeben
 - Wert der Variablen "anzahlBezuege" persistent speichern.
  */
