@@ -1,79 +1,81 @@
-import java.util.Scanner;
-
 /**
  * @author: Philip Kottmann
  * @Datum: 23. März 2025
  * @Inhalt: Kaffeemaschine in OOP
  */
 
+/* TO DOs:
+- Eingezahltes Guthaben beachten, zu wenig Guthaben abfangen, Rückgeld herausgeben
+- Wert der Variablen "anzahlBezuege" persistent speichern.
+ */
+
+import java.text.DecimalFormat;
+import java.util.Locale;
+import java.util.Scanner;
+
 public class KaffeemaschineOOP {
     public static void main(String[] args) {
-        boolean statusAuswahl = true;
+        GetraenkeAngebot getraenkeAngebot = new GetraenkeAngebot();
 
-        Getraenk[] getraenkeAngebot = {
-                (new Getraenk("Café Crème",200, 1.0, false)),
-                (new Getraenk("Espresso",50, 0.5, false)),
-                (new Getraenk("Café Cortado", 60, 1.0, true)),
-                (new Getraenk("Cappuccino", 250, 1.5, true)),
-                (new Getraenk("Latte Macchiato", 300, 1.5, true))};
-
-        General.divider();
-        System.out.println("============= Kaffee-Automat =============");
-        General.divider();
-        // Ausgabe der verfügbaren Getränke
-        System.out.println(Getraenk.getAnzahlGetraenke() + " verschiedene Getränke stehen zur Auswahl");
-        General.divider();
-
-
+        String ueberschrift = "Kaffee-Automat";
+        MenueText.ausgeben(ueberschrift);
+        System.out.println(getraenkeAngebot.getAnzahlGetraenke() + " verschiedene Getränke stehen zur Auswahl");
+        Trennlinie.ausgeben(MenueText.getMenueTextBreite());
 
         var consoleScanner = new Scanner(System.in);
-        int auswahl = 0;
 
-        while (statusAuswahl) {    // Endlosschleife zur Anzeige des Menüs
-            // Erstellung der Items im Menü
-            for (int i = 0; i < getraenkeAngebot.length; i++) {
-                System.out.println((i+1) + ". " + getraenkeAngebot[i].getName());
+        int getraenkeWunsch = 0;
+
+        do {
+            getraenkeAngebotAnzeigen(getraenkeAngebot);
+
+            // Nutzer zur Eingabe auffordern:
+            System.out.print("Bitte Auswahl treffen (1 - " + getraenkeAngebot.getAnzahlGetraenke() + ") " +
+                    "oder \"" + (getraenkeAngebot.getAnzahlGetraenke() + 1) + "\" zum Ausschalten: ");
+
+            // Eingabe prüfen und verifizieren
+            try {
+                String eingabe = consoleScanner.nextLine().trim(); // Ganze Zeile ohne vor- oder nachgestellte Leerzeichen einlesen
+                if (eingabe.isEmpty()) { // Prüfung, ob Eingabe leer
+                    System.out.println("Bitte eine Zahl eingeben.");
+                    continue;
+                }
+                getraenkeWunsch = Integer.parseInt(eingabe);
+
+                if (getraenkeWunsch >= 1 && getraenkeWunsch <= getraenkeAngebot.getAnzahlGetraenke()){ // valide Getränke-Auswahl
+                    // Getränk zubereiten
+                    getraenkeAngebot.getGetraenke().get(getraenkeWunsch - 1).getraenkAusschenken();
+
+                    // Bisherige Bezüge an dieser Maschine ausgeben:
+                    Trennlinie.ausgeben(MenueText.getMenueTextBreite());
+                    System.out.println("Bisher zubereitete Getränke an dieser Maschine: " + Getraenk.getAnzahlBezuege() + " Stk.");
+                    Trennlinie.ausgeben(MenueText.getMenueTextBreite());
+
+                    System.out.println(); // Leerzeichen zur Trennung der Bestellvorgänge
+                } else if (getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 1) { // Ausschalten der Maschine
+                    System.out.println("Kaffeeautomat wird ausgeschaltet...");
+                } else {        // Fehlerhafte Eingabe
+                    System.out.println("Auswahl nicht verfügbar. Bitte eine Zahl im angegebene Bereich eingeben");
+                }
+            } catch (NumberFormatException e) {
+                // throw new RuntimeException(e);
+                System.out.println("Bitte eine gültige Zahl eingeben");
             }
-            System.out.println("9. Ausschalten"); // Zusätzlicher Menüpunkt "Ausschalten".
-
-            // Aufforderung, eine Auswahl zu treffen
-            System.out.print("Bitte Auswahl treffen (1 - " + getraenkeAngebot.length + ") oder Ausschalten: ");
-
-            // Abfrage der Nutzereingabe
-            // var consoleScanner = new Scanner(System.in);
-            // int auswahl = (consoleScanner.nextInt());
-            auswahl = consoleScanner.nextInt();
-
-            switch(auswahl){
-                case 1:
-                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
-                    break;
-                case 2:
-                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
-                    break;
-                case 3:
-                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
-                    break;
-                case 4:
-                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
-                    break;
-                case 5:
-                    getraenkeAngebot[auswahl-1].getraenkAusgeben();
-                    break;
-                case 9:
-                    statusAuswahl = false;
-                    break;
-                default:
-                    System.out.println("Getränk nicht verfügbar!");
-                    break;
-            }
-
-            // Zusammenfassung:
-            General.divider();
-            System.out.println("Bisher zubereitete Getränke an dieser Maschine: " + Getraenk.getAnzahlBezuege() + " Stk.");
-            General.divider();
-
-        }
+        } while (getraenkeWunsch != (getraenkeAngebot.getAnzahlGetraenke() + 1));
         consoleScanner.close();
     }
+
+    private static void getraenkeAngebotAnzeigen(GetraenkeAngebot getraenkeAngebot) {
+        // Definition um "double" mit zwei Dezimalstellen anzugeben
+        Locale.setDefault(Locale.GERMAN);
+        DecimalFormat dezimalAngabe = new DecimalFormat("##0.00");
+
+        // Ausgabe der Getränkeauswahl
+        for (int i = 0; i < getraenkeAngebot.getAnzahlGetraenke(); i++) {
+            System.out.println((i+1) + ". " + getraenkeAngebot.getGetraenke().get(i).getBezeichnung() +
+                    " (€ " + dezimalAngabe.format(getraenkeAngebot.getGetraenke().get(i).getPreis()) + ")");
+        }
+        System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 1) + ". Ausschalten");
+    }
+
 }
