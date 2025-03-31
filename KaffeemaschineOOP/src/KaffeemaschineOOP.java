@@ -49,6 +49,8 @@ public class KaffeemaschineOOP {
                     // Bisherige Bezüge an dieser Maschine ausgeben:
                     Trennlinie.ausgeben(MenueText.getMenueTextBreite());
                     System.out.println("Bisher zubereitete Getränke an dieser Maschine: " + Getraenk.getAnzahlBezuege() + " Stk.");
+//                    System.out.println("Anzahl zubereiteter Getraenke:");
+                    Getraenk.anzahlGetraenkeAusgeben();
                     Trennlinie.ausgeben(MenueText.getMenueTextBreite());
 
                     System.out.println(); // Leerzeichen zur Trennung der Bestellvorgänge
