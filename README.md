@@ -10,3 +10,4 @@
 ### KaffeemaschineOOP:
 + Menu to choose from various coffee types
 + Menu item to switch off the coffee maker
++ Save the number of coffees brewed persistently in a text file

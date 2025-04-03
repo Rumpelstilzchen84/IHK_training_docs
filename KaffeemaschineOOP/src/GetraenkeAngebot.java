@@ -15,7 +15,7 @@ public class GetraenkeAngebot {
         "getraenke" nutzt bisher nur ein Interface,
         weshalb wir hier eine KONKRETE Klasse brauchen (die das Interface implementiert) -> ArrayList<T>
          */
-        getraenke = new ArrayList<>();
+        getraenke = new ArrayList<Getraenk>(); // Klassenbezeichnung in spitzen Klammern nicht nötig
 
         getraenke.add(new Getraenk("Café Crème",200, 1.0, false, 3.20));
         getraenke.add(new Getraenk("Espresso",50, 0.5, false, 1.90));

@@ -5,8 +5,8 @@
  */
 
 /* TODO:
-- Eingezahltes Guthaben beachten, zu wenig Guthaben abfangen, Rückgeld herausgeben
 - Wert der Variablen "anzahlBezuege" persistent speichern.
+- Eingezahltes Guthaben beachten, zu wenig Guthaben abfangen, Rückgeld herausgeben
  */
 
 import java.text.DecimalFormat;
@@ -49,8 +49,6 @@ public class KaffeemaschineOOP {
                     // Bisherige Bezüge an dieser Maschine ausgeben:
                     Trennlinie.ausgeben(MenueText.getMenueTextBreite());
                     System.out.println("Bisher zubereitete Getränke an dieser Maschine: " + Getraenk.getAnzahlBezuege() + " Stk.");
-//                    System.out.println("Anzahl zubereiteter Getraenke:");
-                    Getraenk.anzahlGetraenkeAusgeben();
                     Trennlinie.ausgeben(MenueText.getMenueTextBreite());
 
                     System.out.println(); // Leerzeichen zur Trennung der Bestellvorgänge
