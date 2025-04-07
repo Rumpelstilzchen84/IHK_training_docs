@@ -52,7 +52,13 @@ public class KaffeemaschineOOP {
                     Trennlinie.ausgeben(MenueText.getMenueTextBreite());
 
                     System.out.println(); // Leerzeichen zur Trennung der Bestellvorgänge
-                } else if (getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 1) { // Ausschalten der Maschine
+                } else if(getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 1){    // Einstellungen anzeigen
+                    Einstellungen einstellungen = new Einstellungen();
+                    einstellungen.getraenkeEinstellungenAendern();
+                    einstellungen.showGetraenkeAngebot();
+                    einstellungen.getAnzahlZubereiteterGetraenke();
+                    Trennlinie.ausgeben(MenueText.getMenueTextBreite());
+                } else if (getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 2) {  // Ausschalten der Maschine
                     System.out.println("Kaffeeautomat wird ausgeschaltet...");
                 } else {        // Fehlerhafte Eingabe
                     System.out.println("Auswahl nicht verfügbar. Bitte eine Zahl im angegebene Bereich eingeben");
@@ -61,7 +67,7 @@ public class KaffeemaschineOOP {
                 // throw new RuntimeException(e);
                 System.out.println("Bitte eine gültige Zahl eingeben");
             }
-        } while (getraenkeWunsch != (getraenkeAngebot.getAnzahlGetraenke() + 1));
+        } while (getraenkeWunsch != (getraenkeAngebot.getAnzahlGetraenke() + 2));
         consoleScanner.close();
     }
 
@@ -75,7 +81,8 @@ public class KaffeemaschineOOP {
             System.out.println((i+1) + ". " + getraenkeAngebot.getGetraenke().get(i).getBezeichnung() +
                     " (€ " + dezimalAngabe.format(getraenkeAngebot.getGetraenke().get(i).getPreis()) + ")");
         }
-        System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 1) + ". Ausschalten");
+        System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 1) + ". Einstellungen");
+        System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 2) + ". Ausschalten");
     }
 
 }

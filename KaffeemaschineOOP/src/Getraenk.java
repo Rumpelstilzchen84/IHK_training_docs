@@ -54,6 +54,7 @@ public class Getraenk {
         int bezuegeInDatei = 0;
         if (Files.exists(DATEI_PFAD)){
             try(BufferedReader reader = Files.newBufferedReader(DATEI_PFAD)){
+                // TODO: Leeres .txt-file wird noch nicht abgefangen => NumberFormatException
                 if((anzahl = reader.readLine()) != null){
                     //System.out.println("Bezüge in Datei vorhanden");
                     bezuegeInDatei = Integer.parseInt((anzahl));
