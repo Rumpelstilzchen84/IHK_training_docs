@@ -54,12 +54,9 @@ public class Getraenk {
         int bezuegeInDatei = 0;
         if (Files.exists(DATEI_PFAD)){
             try(BufferedReader reader = Files.newBufferedReader(DATEI_PFAD)){
-                // TODO: Leeres .txt-file wird noch nicht abgefangen => NumberFormatException
                 if((anzahl = reader.readLine()) != null){
-                    //System.out.println("Bezüge in Datei vorhanden");
                     bezuegeInDatei = Integer.parseInt((anzahl));
                 } else {
-                    //System.out.println("Bezüge = 0");
                     bezuegeInDatei = 0;
                 }
             }
@@ -86,7 +83,7 @@ public class Getraenk {
 
 
     // Getter-Methoden
-    static int getAnzahlBezuege(){
+    public static int getAnzahlBezuege() {
         return anzahlBezuege;
     }
 
@@ -98,8 +95,7 @@ public class Getraenk {
         return preis;
     }
 
-// Setter-Methoden
-
+    // Setter-Methoden
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
     }

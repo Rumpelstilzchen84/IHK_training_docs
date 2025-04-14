@@ -20,7 +20,7 @@ public class KaffeemaschineOOP {
         String ueberschrift = "Kaffee-Automat";
         MenueText.ausgeben(ueberschrift);
         System.out.println(getraenkeAngebot.getAnzahlGetraenke() + " verschiedene Getränke stehen zur Auswahl");
-        Trennlinie.ausgeben(MenueText.getMenueTextBreite());
+        //Trennlinie.ausgeben(MenueText.getMenueTextBreite());
 
         var consoleScanner = new Scanner(System.in);
 
@@ -28,10 +28,10 @@ public class KaffeemaschineOOP {
 
         do {
             getraenkeAngebotAnzeigen(getraenkeAngebot);
+            erweiterteAnzeigeGetraenkeAngebot(getraenkeAngebot);
 
             // Nutzer zur Eingabe auffordern:
-            System.out.print("Bitte Auswahl treffen (1 - " + getraenkeAngebot.getAnzahlGetraenke() + ") " +
-                    "oder \"" + (getraenkeAngebot.getAnzahlGetraenke() + 1) + "\" zum Ausschalten: ");
+            System.out.print("Bitte Auswahl treffen (1 - " + (getraenkeAngebot.getAnzahlGetraenke()+2) + "): ");
 
             // Eingabe prüfen und verifizieren
             try {
@@ -46,18 +46,9 @@ public class KaffeemaschineOOP {
                     // Getränk zubereiten
                     getraenkeAngebot.getGetraenke().get(getraenkeWunsch - 1).getraenkAusschenken();
 
-                    // Bisherige Bezüge an dieser Maschine ausgeben:
-                    Trennlinie.ausgeben(MenueText.getMenueTextBreite());
-                    System.out.println("Bisher zubereitete Getränke an dieser Maschine: " + Getraenk.getAnzahlBezuege() + " Stk.");
-                    Trennlinie.ausgeben(MenueText.getMenueTextBreite());
-
                     System.out.println(); // Leerzeichen zur Trennung der Bestellvorgänge
-                } else if(getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 1){    // Einstellungen anzeigen
-                    Einstellungen einstellungen = new Einstellungen();
-                    einstellungen.getraenkeEinstellungenAendern();
-                    einstellungen.showGetraenkeAngebot();
-                    einstellungen.getAnzahlZubereiteterGetraenke();
-                    Trennlinie.ausgeben(MenueText.getMenueTextBreite());
+                } else if(getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 1){    // Einstellungsmenü anzeigen
+                    einstellungenAnzeigen(getraenkeAngebot);
                 } else if (getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 2) {  // Ausschalten der Maschine
                     System.out.println("Kaffeeautomat wird ausgeschaltet...");
                 } else {        // Fehlerhafte Eingabe
@@ -76,13 +67,26 @@ public class KaffeemaschineOOP {
         Locale.setDefault(Locale.GERMAN);
         DecimalFormat dezimalAngabe = new DecimalFormat("##0.00");
 
+        String menueUeberschrift = "Menü";
+        MenueText.ausgeben(menueUeberschrift);
+
         // Ausgabe der Getränkeauswahl
         for (int i = 0; i < getraenkeAngebot.getAnzahlGetraenke(); i++) {
             System.out.println((i+1) + ". " + getraenkeAngebot.getGetraenke().get(i).getBezeichnung() +
                     " (€ " + dezimalAngabe.format(getraenkeAngebot.getGetraenke().get(i).getPreis()) + ")");
         }
+    }
+
+    // Die letzte beiden statischen Anzeigen herauslösen, damit Methode
+    // "getraenkeAngebotAnzeigen()" wiederverwendet werden kann:
+    private static void erweiterteAnzeigeGetraenkeAngebot(GetraenkeAngebot getraenkeAngebot){
         System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 1) + ". Einstellungen");
         System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 2) + ". Ausschalten");
+    }
+
+    // Einstellungs-Menü und -Funktionalität ausgelagert in separate Klasse
+    private static void einstellungenAnzeigen(GetraenkeAngebot getraenkeAngebot){
+        Einstellungen einstellungen = new Einstellungen(getraenkeAngebot);
     }
 
 }
