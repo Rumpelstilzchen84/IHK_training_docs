@@ -20,12 +20,13 @@ public class KaffeemaschineOOP {
         String ueberschrift = "Kaffee-Automat";
         MenueText.ausgeben(ueberschrift);
         System.out.println(getraenkeAngebot.getAnzahlGetraenke() + " verschiedene Getränke stehen zur Auswahl");
-        //Trennlinie.ausgeben(MenueText.getMenueTextBreite());
 
         var consoleScanner = new Scanner(System.in);
 
         int getraenkeWunsch = 0;
-
+        int einstellungsMenueAnzeigen = getraenkeAngebot.getAnzahlGetraenke() + 1;  // Dyn. Variable, die es ermöglicht
+                                                                                    // ins Einstellungsmenü abzubiegen
+                                                                                    // => Vermeidung von "Magic Numbers"
         do {
             getraenkeAngebotAnzeigen(getraenkeAngebot);
             erweiterteAnzeigeGetraenkeAngebot(getraenkeAngebot);
@@ -47,15 +48,14 @@ public class KaffeemaschineOOP {
                     getraenkeAngebot.getGetraenke().get(getraenkeWunsch - 1).getraenkAusschenken();
 
                     System.out.println(); // Leerzeichen zur Trennung der Bestellvorgänge
-                } else if(getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 1){    // Einstellungsmenü anzeigen
-                    einstellungenAnzeigen(getraenkeAngebot);
+                } else if(getraenkeWunsch == einstellungsMenueAnzeigen){    // Einstellungsmenü anzeigen
+                    Einstellungen.anzeigen(getraenkeAngebot, consoleScanner); // Übergabe con "consoleScanner" um das Objekt wiederzuverwenden
                 } else if (getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 2) {  // Ausschalten der Maschine
                     System.out.println("Kaffeeautomat wird ausgeschaltet...");
                 } else {        // Fehlerhafte Eingabe
                     System.out.println("Auswahl nicht verfügbar. Bitte eine Zahl im angegebene Bereich eingeben");
                 }
             } catch (NumberFormatException e) {
-                // throw new RuntimeException(e);
                 System.out.println("Bitte eine gültige Zahl eingeben");
             }
         } while (getraenkeWunsch != (getraenkeAngebot.getAnzahlGetraenke() + 2));
@@ -82,11 +82,6 @@ public class KaffeemaschineOOP {
     private static void erweiterteAnzeigeGetraenkeAngebot(GetraenkeAngebot getraenkeAngebot){
         System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 1) + ". Einstellungen");
         System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 2) + ". Ausschalten");
-    }
-
-    // Einstellungs-Menü und -Funktionalität ausgelagert in separate Klasse
-    private static void einstellungenAnzeigen(GetraenkeAngebot getraenkeAngebot){
-        Einstellungen einstellungen = new Einstellungen(getraenkeAngebot);
     }
 
 }

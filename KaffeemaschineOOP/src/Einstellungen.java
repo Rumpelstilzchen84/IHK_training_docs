@@ -7,72 +7,96 @@ import java.util.Scanner;
  */
 
 public class Einstellungen {
+    private static int einstellungenAuswahl;
+    private static String[] menu;
 
-    Scanner consoleScanner = new Scanner(System.in);
-    private int einstellungsAuswahl = 0;
-    String ueberschrift = "Einstellungen";
+    // leerer Konstruktor der verhindert, dass eine Instanz erstellt wird.
+    private Einstellungen(){
 
+    }
 
-    public Einstellungen(GetraenkeAngebot getraenkeAngebot) {    // Konstruktor
-        do {
-            einstellungsMenueAnzeigen();
+    public static void setEinstellungenAuswahl(int einstellungenAuswahl) {
+        Einstellungen.einstellungenAuswahl = einstellungenAuswahl;
+    }
 
-            try{
-                String eingabe = consoleScanner.nextLine().trim();
-                if (eingabe.isEmpty()){
-                    System.out.print("Bitte eine Zahl eingeben!");
-                    continue;
-                }
-                einstellungsAuswahl = Integer.parseInt(eingabe);
+    public static void setMenu(String[] menu) {
+        Einstellungen.menu = menu;
+    }
 
-                switch (einstellungsAuswahl){
-                    case 1 -> getraenkeEinstellungenAendern();
-                    case 2 -> neuesGetraenkHinzufuegen();
-                    case 3 -> System.out.println("Insgesamt zubereitete Getränke: " +
-                            getraenkeAngebot.getGetraenke().getFirst().anzahlBezuegeAuslesen());
-                    case 4 -> umsatzAnzeigen();
-                    case 5 -> System.out.println("Zurück... ");
-                    default -> System.out.println("Bitte eine verfügbare Auswahl treffen!");
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+    protected static void einstellungsMenueAnzeigen(){
+        MenueText.ausgeben("Einstellungen");
+
+        String[] menuePunkte = {
+                "Getränke-Einstellungen ändern",
+                "Neues Getränk hinzufügen",
+                "Anzahl zubereiteter Getränke anzeigen",
+                "Umsatz der Maschine anzeigen",
+                "Füllstand Bohnenbehälter anzeigen",
+                "Füllstand Milchbehälter anzeigen",
+                "Zurück"
+
+        };
+        setMenu(menuePunkte);
+    }
+
+    protected static void auswahlBehandeln(GetraenkeAngebot getraenkeAngebot, Scanner consoleScanner){
+        try{
+            String eingabe = consoleScanner.nextLine().trim();
+            if (eingabe.isEmpty()){
+                System.out.print("Bitte eine Zahl eingeben!");
             }
-        } while (einstellungsAuswahl != 5);
 
+            setEinstellungenAuswahl(Integer.parseInt(eingabe));
+
+            switch (einstellungenAuswahl){
+                case 1 -> getraenkeEinstellungenAendern();
+                case 2 -> neuesGetraenkHinzufuegen();
+                case 3 -> System.out.println("Insgesamt zubereitete Getränke: " +
+                        getraenkeAngebot.getGetraenke().getFirst().anzahlBezuegeAuslesen());
+                case 4 -> umsatzAnzeigen();
+                case 5 -> fuellstandBohnenbehaelterAnzeigen();
+                case 6 -> fuellstandMilchbehaelterAnzeigen();
+                case 7 -> System.out.println("Zurück...");
+                default -> System.out.println("Bitte eine verfügbare Auswahl treffen!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void einstellungsMenueAnzeigen(){
-        MenueText.ausgeben(ueberschrift);
-
-        System.out.println("1. Getränke-Einstellungen ändern");
-        System.out.println("2. Neues Getränk hinzufügen");
-        System.out.println("3. Anzahl zubereiteter Getränke anzeigen");
-        System.out.println("4. Umsatz der Maschine anzeigen");
-        System.out.println("5. Zurück");
-        System.out.print("Bitte Auswahl treffen: ");
-    }
-
-    public void getraenkeEinstellungenAendern(){
+    private static void getraenkeEinstellungenAendern(){
         System.out.println("Hier können später die Getränke-Einstellungen geändert werden " +
                 "(Füllmenge, Brühzeit, Preis)");
     }
 
-    public void neuesGetraenkHinzufuegen(){
+    private static void neuesGetraenkHinzufuegen(){
         System.out.println("Hier kann später ein neues Getränk hinzugefügt werden.");
     }
 
-    public void umsatzAnzeigen(){
+    private static void umsatzAnzeigen(){
         System.out.println("Hier wird später der an dieser Maschine gemachte Umsatz angezeigt.");
     }
-}
 
-/*
-PK: Ideen/Gedanken/Fragen dazu:
--   Kann das Einstellungs-Menü analog dem "GetraenkeAngebot" auch über ein Interface erstellt werden?
--   Zeile 32: Wie ist die Logik hitner diesem Ausdruck?
-    getraenkeAngebot.getGetraenke().getFirst().anzahlBezuegeAuslesen()
-    => ich bin durch Zufall drauf gestoßen, da IntelliJ mir diese Auswahl angezeigt hat.
-    Der Aufruf von "Getraenk.anzahlBezuege" (static int Variable) hat immer erst das Ergebnis aus der
-    .txt-Datei angezeigt, wenn vorher einmal ein Getränk bestellt/ausegegeben wurde.
-    Wo liegt da der Fehler?
- */
+    private static void fuellstandBohnenbehaelterAnzeigen(){
+        // System.out.print("Name des Bohnenbehälters: ");
+        System.out.println(Bohnenbehaelter.fuellstandAnzeigen(Bohnenbehaelter.name)); // Platzhalter - Feature noch nicht implementiert
+    }
+
+    private static void fuellstandMilchbehaelterAnzeigen(){
+        // System.out.print("Name des Milchbehälters: ");
+        System.out.println(Milchbehaelter.fuellstandAnzeigen(Milchbehaelter.name));    // Platzhalter - Feature noch nicht implementiert
+    }
+
+    public static void anzeigen(GetraenkeAngebot getraenkeAngebot, Scanner consoleScanner){
+        do {
+            einstellungsMenueAnzeigen();
+            for (int i = 0; i < menu.length; i++) {
+                System.out.println((i + 1) + ". " + menu[i]);
+            }
+            System.out.print("Bitte Auswahl treffen: (1 - " + menu.length + "): ");
+
+            auswahlBehandeln(getraenkeAngebot, consoleScanner);
+
+        }while (einstellungenAuswahl < menu.length);
+    }
+}
