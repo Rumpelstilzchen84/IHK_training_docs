@@ -28,4 +28,10 @@ public class GetraenkeAngebot {
     public int getAnzahlGetraenke() {
         return getraenke.size();
     }
+
+    // TODO: Füge ich so korrekterweise eine neues Getränk hinzu?
+    // TODO: Muss ich, um das Array "getraenke" persistent zu speichern (und zu erweitern) auslagern (.txt oder SQL)?
+    public void addNeuesGetraenk(Getraenk neuesGetraenk){
+        getraenke.add(neuesGetraenk);
+    }
 }

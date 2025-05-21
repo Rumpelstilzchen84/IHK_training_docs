@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 /**
@@ -10,9 +11,15 @@ public class Einstellungen {
     private static int einstellungenAuswahl;
     private static String[] menu;
 
+    // TODO: Brauch ich das? => Schau'n mer mal!
+//    private String bezeichnung;
+//    private int fuellmenge;
+//    private int bruehzeit;
+//    private boolean milchschaum;
+//    private BigDecimal preis;
+
     // leerer Konstruktor der verhindert, dass eine Instanz erstellt wird.
     private Einstellungen(){
-
     }
 
     public static void setEinstellungenAuswahl(int einstellungenAuswahl) {
@@ -23,6 +30,7 @@ public class Einstellungen {
         Einstellungen.menu = menu;
     }
 
+    // Menüpunkte über ein Array definiert, über das später per for-Schleife iteriert wird.
     protected static void einstellungsMenueAnzeigen(){
         MenueText.ausgeben("Einstellungen");
 
@@ -33,8 +41,8 @@ public class Einstellungen {
                 "Umsatz der Maschine anzeigen",
                 "Füllstand Bohnenbehälter anzeigen",
                 "Füllstand Milchbehälter anzeigen",
+                "Reset Bezüge",
                 "Zurück"
-
         };
         setMenu(menuePunkte);
     }
@@ -50,13 +58,13 @@ public class Einstellungen {
 
             switch (einstellungenAuswahl){
                 case 1 -> getraenkeEinstellungenAendern();
-                case 2 -> neuesGetraenkHinzufuegen();
-                case 3 -> System.out.println("Insgesamt zubereitete Getränke: " +
-                        getraenkeAngebot.getGetraenke().getFirst().anzahlBezuegeAuslesen());
+                case 2 -> neuesGetraenkHinzufuegen(getraenkeAngebot, consoleScanner);
+                case 3 -> System.out.println("Insgesamt zubereitete Getränke: " + Bezuege.anzahlAnzeigen());
                 case 4 -> umsatzAnzeigen();
                 case 5 -> fuellstandBohnenbehaelterAnzeigen();
                 case 6 -> fuellstandMilchbehaelterAnzeigen();
-                case 7 -> System.out.println("Zurück...");
+                case 7 -> Bezuege.resetBezuege();
+                case 8 -> System.out.println("Zurück...");
                 default -> System.out.println("Bitte eine verfügbare Auswahl treffen!");
             }
         } catch (Exception e) {
@@ -69,8 +77,16 @@ public class Einstellungen {
                 "(Füllmenge, Brühzeit, Preis)");
     }
 
-    private static void neuesGetraenkHinzufuegen(){
+    public static void neuesGetraenkHinzufuegen(GetraenkeAngebot getraenkeAngebot, Scanner consoleScanner){
         System.out.println("Hier kann später ein neues Getränk hinzugefügt werden.");
+        System.out.println("Testdaten werden hinzugefügt: Testkaffee - 600 ml - 2.0 min - ja - 8.0€");
+        Getraenk neuesGetraenk = new Getraenk(
+                "Testkaffee",
+                600,
+                2.0,
+                true,
+                8.0);
+        getraenkeAngebot.addNeuesGetraenk(neuesGetraenk);
     }
 
     private static void umsatzAnzeigen(){

@@ -24,10 +24,13 @@ public class KaffeemaschineOOP {
         var consoleScanner = new Scanner(System.in);
 
         int getraenkeWunsch = 0;
-        int einstellungsMenueAnzeigen = getraenkeAngebot.getAnzahlGetraenke() + 1;  // Dyn. Variable, die es ermöglicht
-                                                                                    // ins Einstellungsmenü abzubiegen
-                                                                                    // => Vermeidung von "Magic Numbers"
+        int einstellungsMenueAnzeigen = 0;  // wird in der do-while-Schleife zyklisch aktualisiert,
+                                            // damit "getraenkeAngebot.getAnzahlGetraenke()" aktualisiert wird.
+
         do {
+            // Dyn. Variable, die es ermöglicht, ins Einstellungsmenü abzubiegen => Vermeidung von "Magic Numbers"
+            einstellungsMenueAnzeigen = getraenkeAngebot.getAnzahlGetraenke() + 1;
+
             getraenkeAngebotAnzeigen(getraenkeAngebot);
             erweiterteAnzeigeGetraenkeAngebot(getraenkeAngebot);
 
@@ -49,11 +52,11 @@ public class KaffeemaschineOOP {
 
                     System.out.println(); // Leerzeichen zur Trennung der Bestellvorgänge
                 } else if(getraenkeWunsch == einstellungsMenueAnzeigen){    // Einstellungsmenü anzeigen
-                    Einstellungen.anzeigen(getraenkeAngebot, consoleScanner); // Übergabe con "consoleScanner" um das Objekt wiederzuverwenden
+                    Einstellungen.anzeigen(getraenkeAngebot, consoleScanner); // Übergabe von "consoleScanner" um das Objekt wiederzuverwenden
                 } else if (getraenkeWunsch == getraenkeAngebot.getAnzahlGetraenke() + 2) {  // Ausschalten der Maschine
                     System.out.println("Kaffeeautomat wird ausgeschaltet...");
                 } else {        // Fehlerhafte Eingabe
-                    System.out.println("Auswahl nicht verfügbar. Bitte eine Zahl im angegebene Bereich eingeben");
+                    System.out.println("Auswahl nicht verfügbar. Bitte eine Zahl im angegebenen Bereich eingeben");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Bitte eine gültige Zahl eingeben");
