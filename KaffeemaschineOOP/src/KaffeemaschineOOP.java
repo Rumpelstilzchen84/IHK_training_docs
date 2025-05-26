@@ -9,6 +9,7 @@
 - Eingezahltes Guthaben beachten, zu wenig Guthaben abfangen, Rückgeld herausgeben
  */
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Locale;
 import java.util.Scanner;
@@ -61,6 +62,7 @@ public class KaffeemaschineOOP {
             } catch (NumberFormatException e) {
                 System.out.println("Bitte eine gültige Zahl eingeben");
             }
+            // warteSchleife(consoleScanner);
         } while (getraenkeWunsch != (getraenkeAngebot.getAnzahlGetraenke() + 2));
         consoleScanner.close();
     }
@@ -87,4 +89,10 @@ public class KaffeemaschineOOP {
         System.out.println((getraenkeAngebot.getAnzahlGetraenke() + 2) + ". Ausschalten");
     }
 
+    // TODO: Warteschleife analog "Drücke beliebige Taste um fortzufahren"...
+    // hier ist noch offen, wo und wann genau diese Methode greifen soll
+    public static void warteSchleife(Scanner consoleScanner){
+        System.out.println("Drücke eine beliebige Taste, um fortzufahren...");
+        consoleScanner.nextLine(); // Wartet auf die Eingabe
+        }
 }

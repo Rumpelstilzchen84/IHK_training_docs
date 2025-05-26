@@ -1,5 +1,7 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.List;
 
 /**
  * @author: Philip Kottmann
@@ -9,14 +11,11 @@ import java.util.Scanner;
 
 public class Einstellungen {
     private static int einstellungenAuswahl;
-    private static String[] menu;
+    private static List<String> menu;
+    private static Fuellstand bohnenBehaelter = new Fuellstand("Bohnenbehälter", 1000);
+    private static Fuellstand milchBehaelter = new Fuellstand("Milchbehälter", 1000);
+    private static Fuellstand wasserTank = new Fuellstand("Wassertank", 2500);
 
-    // TODO: Brauch ich das? => Schau'n mer mal!
-//    private String bezeichnung;
-//    private int fuellmenge;
-//    private int bruehzeit;
-//    private boolean milchschaum;
-//    private BigDecimal preis;
 
     // leerer Konstruktor der verhindert, dass eine Instanz erstellt wird.
     private Einstellungen(){
@@ -26,25 +25,21 @@ public class Einstellungen {
         Einstellungen.einstellungenAuswahl = einstellungenAuswahl;
     }
 
-    public static void setMenu(String[] menu) {
-        Einstellungen.menu = menu;
-    }
-
-    // Menüpunkte über ein Array definiert, über das später per for-Schleife iteriert wird.
+    // Menüpunkte über ein ArrayList definiert, über das später per for-Schleife iteriert wird.
     protected static void einstellungsMenueAnzeigen(){
         MenueText.ausgeben("Einstellungen");
 
-        String[] menuePunkte = {
-                "Getränke-Einstellungen ändern",
-                "Neues Getränk hinzufügen",
-                "Anzahl zubereiteter Getränke anzeigen",
-                "Umsatz der Maschine anzeigen",
-                "Füllstand Bohnenbehälter anzeigen",
-                "Füllstand Milchbehälter anzeigen",
-                "Reset Bezüge",
-                "Zurück"
-        };
-        setMenu(menuePunkte);
+        menu = new ArrayList<String>();
+
+        menu.add("Getränke-Einstellungen ändern");
+        menu.add("Neues Getränk hinzufügen");
+        menu.add("Anzahl zubereiteter Getränke anzeigen");
+        menu.add("Umsatz der Maschine anzeigen");
+        menu.add("Füllstand Bohnenbehälter anzeigen");
+        menu.add("Füllstand Milchbehälter anzeigen");
+        menu.add("Füllstand Wassertank anzeigen");
+        menu.add("Reset Bezüge");
+        menu.add("Zurück");
     }
 
     protected static void auswahlBehandeln(GetraenkeAngebot getraenkeAngebot, Scanner consoleScanner){
@@ -61,15 +56,17 @@ public class Einstellungen {
                 case 2 -> neuesGetraenkHinzufuegen(getraenkeAngebot, consoleScanner);
                 case 3 -> System.out.println("Insgesamt zubereitete Getränke: " + Bezuege.anzahlAnzeigen());
                 case 4 -> umsatzAnzeigen();
-                case 5 -> fuellstandBohnenbehaelterAnzeigen();
-                case 6 -> fuellstandMilchbehaelterAnzeigen();
-                case 7 -> Bezuege.resetBezuege();
-                case 8 -> System.out.println("Zurück...");
+                case 5 -> bohnenBehaelter.fuellstandAnzeigen();
+                case 6 -> milchBehaelter.fuellstandAnzeigen();
+                case 7 -> wasserTank.fuellstandAnzeigen();
+                case 8 -> Bezuege.resetBezuege();
+                case 9 -> System.out.println("Zurück...");
                 default -> System.out.println("Bitte eine verfügbare Auswahl treffen!");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        // KaffeemaschineOOP.warteSchleife(consoleScanner);
     }
 
     private static void getraenkeEinstellungenAendern(){
@@ -93,26 +90,16 @@ public class Einstellungen {
         System.out.println("Hier wird später der an dieser Maschine gemachte Umsatz angezeigt.");
     }
 
-    private static void fuellstandBohnenbehaelterAnzeigen(){
-        // System.out.print("Name des Bohnenbehälters: ");
-        System.out.println(Bohnenbehaelter.fuellstandAnzeigen(Bohnenbehaelter.name)); // Platzhalter - Feature noch nicht implementiert
-    }
-
-    private static void fuellstandMilchbehaelterAnzeigen(){
-        // System.out.print("Name des Milchbehälters: ");
-        System.out.println(Milchbehaelter.fuellstandAnzeigen(Milchbehaelter.name));    // Platzhalter - Feature noch nicht implementiert
-    }
-
     public static void anzeigen(GetraenkeAngebot getraenkeAngebot, Scanner consoleScanner){
         do {
             einstellungsMenueAnzeigen();
-            for (int i = 0; i < menu.length; i++) {
-                System.out.println((i + 1) + ". " + menu[i]);
+            for (int i = 0; i < menu.size(); i++) {
+                System.out.println((i + 1) + ". " + menu.get(i));
             }
-            System.out.print("Bitte Auswahl treffen: (1 - " + menu.length + "): ");
+            System.out.print("Bitte Auswahl treffen: (1 - " + menu.size() + "): ");
 
             auswahlBehandeln(getraenkeAngebot, consoleScanner);
 
-        }while (einstellungenAuswahl < menu.length);
+        }while (einstellungenAuswahl < menu.size());
     }
 }

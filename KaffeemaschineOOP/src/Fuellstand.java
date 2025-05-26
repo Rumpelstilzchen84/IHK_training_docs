@@ -1,10 +1,12 @@
 public class Fuellstand {
     private int minimum = 0;
     private int maximum = 0;
+    private String name = "";
 
     // Konstruktor
-    public Fuellstand() {
-
+    public Fuellstand(String name, int maximum) {
+        setName(name);
+        setMaximum(maximum);
     }
 
     // Getter
@@ -16,6 +18,9 @@ public class Fuellstand {
         return maximum;
     }
 
+    public String getName() {
+        return name;
+    }
 
     // Setter
     public void setMinimum(int minimum) {
@@ -26,6 +31,9 @@ public class Fuellstand {
         this.maximum = maximum;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     // eigene Methoden
     private void fuellstandErhoehen(){
@@ -36,8 +44,9 @@ public class Fuellstand {
 
     }
 
-    public static String fuellstandAnzeigen(String behaelter){
+    public void fuellstandAnzeigen(){
         //System.out.println("Das ist der Füllstand des " + behaelter.getClass());
-        return "Das ist der Füllstand des " + behaelter;
+        System.out.println("Das ist der Füllstand des " + getName());
+        System.out.println("Der maximale Füllstand beträgt: " + getMaximum());
     }
 }
