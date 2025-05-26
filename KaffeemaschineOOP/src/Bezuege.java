@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.sql.*;
 
 public class Bezuege {
     // static Attribute
     static int anzahlBezuege;
     private static final Path DATEI_PFAD = Path.of("zubereiteteGetraenke.txt");
+    private static final String url = "jdbc:sqlite:kaffeemaschine.db";
+    private static final String tabellenNameBezuege = "bezuege";
+    private static final String attributNameBezuege = "bezuege";
 
     // Leerer Konstruktor, damit keine Instanz erzeugt werden kann.
     private Bezuege(){
@@ -34,34 +38,49 @@ public class Bezuege {
         anzahlbezuegeSchreiben(getAnzahlBezuege());
     }
 
+    // Eigene Methoden
+    // Anzahl Bezüge in SQLite-DB schreiben
     private static void anzahlbezuegeSchreiben(int anzahlBezuege) {
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                DATEI_PFAD,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING))
-        {
-            writer.write(String.valueOf(anzahlBezuege));
-            writer.newLine();
-        } catch (IOException e) {
-            System.out.println("Fehler beim Schreiben der Bezüge");
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                // Erstellen einer Tabelle
+                String createTableSQL = "CREATE TABLE IF NOT EXISTS " + tabellenNameBezuege + "(id INTEGER PRIMARY KEY, bezuege INTEGER)";
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.execute(createTableSQL);
+                }
+
+                // Einfügen von Daten
+                String insertSQL = "UPDATE " + tabellenNameBezuege
+                        + " SET " + attributNameBezuege
+                        + "="
+                        + anzahlBezuege
+                        + " WHERE id = 1";
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.executeUpdate(insertSQL);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Fehler: " + e.getMessage());
         }
     }
 
-    // Eigene Methoden
+    // Anzahl Bezüge in SQLite-DB schreiben:
     public static int anzahlAnzeigen(){
-        String anzahl = "";
         int bezuegeInDatei = 0;
-        if (Files.exists(DATEI_PFAD)){
-            try(BufferedReader reader = Files.newBufferedReader(DATEI_PFAD)){
-                if((anzahl = reader.readLine()) != null){
-                    bezuegeInDatei = Integer.parseInt((anzahl));
-                } else {
-                    bezuegeInDatei = 0;
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) { // verbindung zur Datenbank hergestellt
+                // Abrufen und Anzeigen von Daten
+                String selectSQL = "SELECT " + attributNameBezuege + " FROM " + tabellenNameBezuege + " WHERE id = 1";
+                try (Statement stmt = conn.createStatement();
+                     ResultSet rs = stmt.executeQuery(selectSQL)) {
+                    while (rs.next()) {
+                        //System.out.println("ID: " + rs.getInt("id") + ", Anzahl: " + rs.getString("bezuege"));
+                        bezuegeInDatei = rs.getInt(attributNameBezuege);
+                    }
                 }
             }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        } catch (SQLException e) {
+            System.out.println("Fehler: " + e.getMessage());
         }
         return bezuegeInDatei;
     }

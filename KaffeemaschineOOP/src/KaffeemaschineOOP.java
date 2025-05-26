@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class KaffeemaschineOOP {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         GetraenkeAngebot getraenkeAngebot = new GetraenkeAngebot();
 
         String ueberschrift = "Kaffee-Automat";
